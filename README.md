@@ -505,6 +505,46 @@ mPraiseAnimator.startAnimation(mIvPraise);
 <img src="/gif/mei_scroll.gif" width="280px"/> 
 
 文章博客地址：[仿豆瓣弹性滑动控件，史上最全方位讲解事件滑动冲突](https://www.jianshu.com/p/2d7a63455c83)
+ 
+ 先导知识：
+ * getRawX
+ * getTranslationX
+ 
+ 参考：https://blog.csdn.net/dmk877/article/details/51550031
+ 
+ 博文中的 ViewPager的滑动冲突解决方案，目前感觉不好，看看下面的一篇博文能解决实际问题吗？
+[ViewPager，ScrollView 嵌套ViewPager滑动冲突解决](https://blog.csdn.net/gdutxiaoxu/article/details/52939127)
+
+
+
+[一文解决Android View滑动冲突](https://www.jianshu.com/p/982a83271327)
+
+ 
+#### canScrollHorizontally
+ 
+ ```Java
+      /**
+          * Check if this view can be scrolled horizontally in a certain direction.
+          *
+          * @param direction Negative to check scrolling left, positive to check scrolling right.
+          *                  参数为负数检查可以向左滚动，参数为正数检查可以向右滚动。
+          * @return true if this view can be scrolled in the specified direction, false otherwise.
+          */
+         public boolean canScrollHorizontally(int direction) {
+             final int offset = computeHorizontalScrollOffset();
+             final int range = computeHorizontalScrollRange() - computeHorizontalScrollExtent();
+             if (range == 0) return false;
+             if (direction < 0) {
+                 return offset > 0;
+             } else {
+                 return offset < range - 1;
+             }
+         }
+
+```
+      
+
+
 
 ## Contact
 

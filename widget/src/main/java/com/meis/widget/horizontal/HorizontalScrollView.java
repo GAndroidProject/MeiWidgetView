@@ -28,6 +28,7 @@ public class HorizontalScrollView extends RelativeLayout {
     private boolean mShowMore = true;
     private float mHintLeftMargin = 0;
     private int mOffsetWidth = 0;
+// last 上一次，最近一次
     private float mLastX;
     private float mLastY;
     private boolean mConsumeMoveEvent = false;
@@ -97,10 +98,12 @@ public class HorizontalScrollView extends RelativeLayout {
             return super.dispatchTouchEvent(ev);
         }
         switch (ev.getAction()) {
+//            // 重置变量
             case MotionEvent.ACTION_DOWN:
                 mHintLeftMargin = 0;
                 mMoveIndex = 0;
                 mConsumeMoveEvent = false;
+//                seachal annotation:getRawX()获得触摸点在整个屏幕的 X 轴坐标。
                 mLastX = ev.getRawX();
                 mLastY = ev.getRawY();
                 break;
@@ -115,8 +118,10 @@ public class HorizontalScrollView extends RelativeLayout {
                 if (!mConsumeMoveEvent) {
                     // 处理事件冲突
                     if (Math.abs(mDeltaX) > Math.abs(mDeltaY)) {
+//                        左右滑动多于上下滑动，则告诉父view，不要拦截，自己处理左右滑动
                         getParent().requestDisallowInterceptTouchEvent(true);
                     } else {
+//                        上下滑动多于左右滑动，则告诉父View 拦截，让父view处理上下滑动
                         getParent().requestDisallowInterceptTouchEvent(false);
                     }
                 }
@@ -133,16 +138,20 @@ public class HorizontalScrollView extends RelativeLayout {
 
                 // 右滑
                 if (mDeltaX > 0) {
+//                   //  canScrollHorizontally(-1) 判断是否可以向左滑动；if（不能向左滑动||已经左偏移)，那么HorizontalScrollView要（根据一定规则计算的值）设置mHorizontalRecyclerView的偏移量
                     if (!mHorizontalRecyclerView.canScrollHorizontally(-1) || mHorizontalRecyclerView.getTranslationX() < 0) {
                         float transX = mDeltaX + mHorizontalRecyclerView.getTranslationX();
-                        if (mHorizontalRecyclerView.canScrollHorizontally(-1) && transX >= 0) {
+//                      向右滑动的过程中又向左滑动，
+                       if (mHorizontalRecyclerView.canScrollHorizontally(-1) && transX >= 0) {
                             transX = 0;
                         }
+
                         mHorizontalRecyclerView.setTranslationX(transX);
                         setHintTextTranslationX(mDeltaX);
                     }
                 } else if (mDeltaX < 0) { // 左滑
                     if (!mHorizontalRecyclerView.canScrollHorizontally(1) || mHorizontalRecyclerView.getTranslationX() > 0) {
+
                         float transX = mDeltaX + mHorizontalRecyclerView.getTranslationX();
                         if (transX <= 0 && mHorizontalRecyclerView.canScrollHorizontally(1)) {
                             transX = 0;

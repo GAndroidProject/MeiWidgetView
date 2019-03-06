@@ -40,6 +40,7 @@ public class InterceptViewPager extends ViewPager {
 
     // 遍历树
     private boolean childInterceptEvent(ViewGroup parentView, int touchX, int touchY) {
+//        Consume消费
         boolean isConsume = false;
         for (int i = parentView.getChildCount() - 1; i >= 0; i--) {
             View childView = parentView.getChildAt(i);
@@ -51,11 +52,13 @@ public class InterceptViewPager extends ViewPager {
                 isConsume = true;
                 break;
             }
+//            找不到继续找， 使用递归去查找
             if (childView instanceof ViewGroup) {
                 ViewGroup itemView = (ViewGroup) childView;
                 if (!isTouchView) {
                     continue;
                 } else {
+//                    递归
                     isConsume |= childInterceptEvent(itemView, touchX, touchY);
                     if (isConsume) {
                         break;
