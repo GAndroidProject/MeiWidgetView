@@ -100,6 +100,9 @@ public class HorizontalScrollView extends RelativeLayout {
         switch (ev.getAction()) {
 //            // 重置变量
             case MotionEvent.ACTION_DOWN:
+//      ACTION_DOWN事件 告诉父不要拦截自己的事件，在move中再根据条件是否
+                getParent().requestDisallowInterceptTouchEvent(true);
+
                 mHintLeftMargin = 0;
                 mMoveIndex = 0;
                 mConsumeMoveEvent = false;
@@ -188,6 +191,7 @@ public class HorizontalScrollView extends RelativeLayout {
                 break;
 
         }
+//        seachal annotation: dispatchTouchEvent返回true则事件到此结束了(没有谁再收到事件)，在RecyclerView存在偏移时消费掉，在RecyclerView不存在偏移时向下分发。
         return mHorizontalRecyclerView.getTranslationX() != 0 ? true : super.dispatchTouchEvent(ev);
     }
 

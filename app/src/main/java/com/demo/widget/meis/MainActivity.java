@@ -8,6 +8,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import com.demo.widget.R;
+import com.demo.widget.meis.SeachalScrollView.SeachalScrollViewActivity;
 
 /**
  * desc:
@@ -74,4 +75,9 @@ public class MainActivity extends AppCompatActivity {
     public void onScroll(View view) {
         startActivity(new Intent(this, MeiScrollViewActivity.class));
     }
+
+    public void onSeachalScroll(View view) {
+        startActivity(new Intent(this,   SeachalScrollViewActivity.class));
+    }
+
 }
